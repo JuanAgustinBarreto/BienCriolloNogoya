@@ -6,7 +6,7 @@ import { useGastos } from "@/hooks/useGastos";
 import { PageHeader } from "@/components/PageHeader";
 import { KpiCard } from "@/components/KpiCard";
 import { fmtCurrency } from "@/lib/format";
-import { backupJSON, exportExcel, exportVentasPDF } from "@/lib/exports";
+import { backupJSON, exportExcel, exportResumenPDF, exportVentasPDF } from "@/lib/exports";
 
 export const Route = createFileRoute("/resumen")({ component: ResumenPage });
 
@@ -102,6 +102,42 @@ function ResumenPage() {
               ))}
             </ul>
           )}
+        </div>
+
+        <div className="rounded-xl border border-border bg-card p-5 shadow-card">
+          <h3 className="font-semibold mb-4">Reportes PDF del resumen</h3>
+          <div className="grid sm:grid-cols-3 gap-3">
+            <button
+              onClick={() => exportResumenPDF(vFiltradas, gFiltrados, { titulo: "General", rango: range })}
+              className="flex items-center gap-3 p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left"
+            >
+              <FileText className="size-6 text-primary" />
+              <div>
+                <div className="font-medium text-sm">PDF General</div>
+                <div className="text-xs text-muted-foreground">Ventas − Gastos</div>
+              </div>
+            </button>
+            <button
+              onClick={() => exportResumenPDF(ventasDiego, [], { titulo: "Diego", rango: range })}
+              className="flex items-center gap-3 p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left"
+            >
+              <FileText className="size-6 text-success" />
+              <div>
+                <div className="font-medium text-sm">PDF Diego</div>
+                <div className="text-xs text-muted-foreground">Solo ventas de Diego</div>
+              </div>
+            </button>
+            <button
+              onClick={() => exportResumenPDF(ventasAriel, [], { titulo: "Ariel", rango: range })}
+              className="flex items-center gap-3 p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left"
+            >
+              <FileText className="size-6 text-warning" />
+              <div>
+                <div className="font-medium text-sm">PDF Ariel</div>
+                <div className="text-xs text-muted-foreground">Solo ventas de Ariel</div>
+              </div>
+            </button>
+          </div>
         </div>
 
         <div className="rounded-xl border border-border bg-card p-5 shadow-card">
