@@ -6,7 +6,7 @@ import { useGastos } from "@/hooks/useGastos";
 import { PageHeader } from "@/components/PageHeader";
 import { KpiCard } from "@/components/KpiCard";
 import { fmtCurrency } from "@/lib/format";
-import { backupJSON, exportExcel, exportVentasPDF } from "@/lib/exports";
+import { backupJSON, exportExcel, exportResumenPDF, exportVentasPDF } from "@/lib/exports";
 
 export const Route = createFileRoute("/resumen")({ component: ResumenPage });
 
