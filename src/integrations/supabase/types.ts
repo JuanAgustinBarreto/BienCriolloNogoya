@@ -14,7 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      gastos: {
+        Row: {
+          created_at: string
+          descripcion: string
+          donde_compro: string
+          id: string
+          monto: number
+          responsable: string
+        }
+        Insert: {
+          created_at?: string
+          descripcion?: string
+          donde_compro?: string
+          id?: string
+          monto?: number
+          responsable: string
+        }
+        Update: {
+          created_at?: string
+          descripcion?: string
+          donde_compro?: string
+          id?: string
+          monto?: number
+          responsable?: string
+        }
+        Relationships: []
+      }
+      ventas: {
+        Row: {
+          cantidad: number
+          created_at: string
+          id: string
+          negocio: string
+          precio_unitario: number
+          total: number
+          variedad: string
+          vendedor: string
+        }
+        Insert: {
+          cantidad?: number
+          created_at?: string
+          id?: string
+          negocio?: string
+          precio_unitario?: number
+          total?: number
+          variedad: string
+          vendedor: string
+        }
+        Update: {
+          cantidad?: number
+          created_at?: string
+          id?: string
+          negocio?: string
+          precio_unitario?: number
+          total?: number
+          variedad?: string
+          vendedor?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
