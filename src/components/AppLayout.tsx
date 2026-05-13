@@ -1,6 +1,7 @@
 import { Link, useRouterState, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, ShoppingBag, Receipt, BarChart3, Pizza } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Receipt, BarChart3 } from "lucide-react";
 import { Toaster } from "sonner";
+import logo from "@/assets/logo.png";
 
 const nav = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -17,9 +18,11 @@ export function AppLayout() {
       {/* Sidebar desktop */}
       <aside className="hidden md:flex w-64 flex-col border-r border-border bg-sidebar p-4 sticky top-0 h-screen">
         <div className="flex items-center gap-3 px-2 py-4 mb-4">
-          <div className="size-10 rounded-xl gradient-primary grid place-items-center shadow-glow">
-            <Pizza className="size-5 text-primary-foreground" />
-          </div>
+          <img
+            src={logo}
+            alt="Bien Criollo"
+            className="size-12 rounded-full object-cover ring-2 ring-primary/50 shadow-glow"
+          />
           <div>
             <div className="font-bold leading-tight">Bien Criollo</div>
             <div className="text-xs text-muted-foreground">Pizzería</div>
