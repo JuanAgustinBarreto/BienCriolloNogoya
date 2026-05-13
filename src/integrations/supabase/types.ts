@@ -41,6 +41,33 @@ export type Database = {
         }
         Relationships: []
       }
+      usuarios: {
+        Row: {
+          created_at: string
+          id: string
+          nombre: string
+          password: string
+          role: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nombre: string
+          password: string
+          role?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nombre?: string
+          password?: string
+          role?: string
+          username?: string
+        }
+        Relationships: []
+      }
       ventas: {
         Row: {
           cantidad: number

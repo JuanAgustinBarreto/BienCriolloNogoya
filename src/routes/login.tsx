@@ -18,16 +18,16 @@ function LoginPage() {
 
   if (ready && user) return <Navigate to="/" />;
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const res = login(username, password);
+    const res = await login(username, password);
     setLoading(false);
     if (!res.ok) {
       toast.error(res.error || "No se pudo iniciar sesión");
       return;
     }
-    toast.success(`Bienvenido`);
+    toast.success("Bienvenido");
     navigate({ to: "/" });
   };
 
