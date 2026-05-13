@@ -8,10 +8,12 @@ import { EmptyState } from "@/components/EmptyState";
 import { fmtCurrency, fmtDateTime, VENDEDORES } from "@/lib/format";
 import { exportGastosPDF } from "@/lib/exports";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/gastos")({ component: GastosPage });
 
 function GastosPage() {
+  const { isAdmin } = useAuth();
   const { gastos, loading, add, update, remove } = useGastos();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -51,9 +53,11 @@ function GastosPage() {
             <button onClick={() => exportGastosPDF(filtered)} className="hidden sm:inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm hover:border-primary transition-colors">
               <FileText className="size-4" /> PDF
             </button>
-            <button onClick={() => { reset(); setOpen(true); }} className="inline-flex items-center gap-2 rounded-lg gradient-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-glow">
-              <Plus className="size-4" /> Nuevo
-            </button>
+            {isAdmin && (
+              <button onClick={() => { reset(); setOpen(true); }} className="inline-flex items-center gap-2 rounded-lg gradient-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-glow">
+                <Plus className="size-4" /> Nuevo
+              </button>
+            )}
           </>
         }
       />
@@ -83,10 +87,12 @@ function GastosPage() {
                       <td className="text-muted-foreground">{g.descripcion || "—"}</td>
                       <td className="font-semibold text-secondary-foreground">{fmtCurrency(Number(g.monto))}</td>
                       <td className="pr-3">
-                        <div className="flex justify-end gap-1">
-                          <button onClick={() => startEdit(g)} className="p-1.5 rounded-md hover:bg-primary/15 text-muted-foreground hover:text-primary"><Pencil className="size-4" /></button>
-                          <button onClick={() => confirm("¿Eliminar este gasto?") && remove(g.id)} className="p-1.5 rounded-md hover:bg-destructive/15 text-muted-foreground hover:text-destructive"><Trash2 className="size-4" /></button>
-                        </div>
+                        {isAdmin ? (
+                          <div className="flex justify-end gap-1">
+                            <button onClick={() => startEdit(g)} className="p-1.5 rounded-md hover:bg-primary/15 text-muted-foreground hover:text-primary"><Pencil className="size-4" /></button>
+                            <button onClick={() => confirm("¿Eliminar este gasto?") && remove(g.id)} className="p-1.5 rounded-md hover:bg-destructive/15 text-muted-foreground hover:text-destructive"><Trash2 className="size-4" /></button>
+                          </div>
+                        ) : null}
                       </td>
                     </motion.tr>
                   ))}
@@ -97,7 +103,7 @@ function GastosPage() {
         </div>
       </div>
 
-      {open && (
+      {open && isAdmin && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4" onClick={() => setOpen(false)}>
           <motion.form
             initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }}

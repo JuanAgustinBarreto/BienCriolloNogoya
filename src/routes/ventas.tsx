@@ -8,10 +8,12 @@ import { EmptyState } from "@/components/EmptyState";
 import { fmtCurrency, fmtDateTime, PIZZAS, VENDEDORES } from "@/lib/format";
 import { exportVentasPDF } from "@/lib/exports";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/ventas")({ component: VentasPage });
 
 function VentasPage() {
+  const { isAdmin } = useAuth();
   const { ventas, loading, add, update, remove } = useVentas();
   const [open, setOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -68,9 +70,11 @@ function VentasPage() {
             <button onClick={() => exportVentasPDF(filtered)} className="hidden sm:inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm hover:border-primary transition-colors">
               <FileText className="size-4" /> PDF
             </button>
-            <button onClick={() => { reset(); setOpen(true); }} className="inline-flex items-center gap-2 rounded-lg gradient-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-glow">
-              <Plus className="size-4" /> Nueva
-            </button>
+            {isAdmin && (
+              <button onClick={() => { reset(); setOpen(true); }} className="inline-flex items-center gap-2 rounded-lg gradient-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-glow">
+                <Plus className="size-4" /> Nueva
+              </button>
+            )}
           </>
         }
       />
@@ -108,10 +112,12 @@ function VentasPage() {
                       <td className="text-muted-foreground">{v.negocio || "—"}</td>
                       <td className="font-semibold">{fmtCurrency(Number(v.total))}</td>
                       <td className="pr-3">
-                        <div className="flex justify-end gap-1">
-                          <button onClick={() => startEdit(v)} className="p-1.5 rounded-md hover:bg-primary/15 text-muted-foreground hover:text-primary"><Pencil className="size-4" /></button>
-                          <button onClick={() => confirmDelete(v.id)} className="p-1.5 rounded-md hover:bg-destructive/15 text-muted-foreground hover:text-destructive"><Trash2 className="size-4" /></button>
-                        </div>
+                        {isAdmin ? (
+                          <div className="flex justify-end gap-1">
+                            <button onClick={() => startEdit(v)} className="p-1.5 rounded-md hover:bg-primary/15 text-muted-foreground hover:text-primary"><Pencil className="size-4" /></button>
+                            <button onClick={() => confirmDelete(v.id)} className="p-1.5 rounded-md hover:bg-destructive/15 text-muted-foreground hover:text-destructive"><Trash2 className="size-4" /></button>
+                          </div>
+                        ) : null}
                       </td>
                     </motion.tr>
                   ))}
@@ -122,7 +128,7 @@ function VentasPage() {
         </div>
       </div>
 
-      {open && (
+      {open && isAdmin && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4" onClick={() => setOpen(false)}>
           <motion.form
             initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }}
