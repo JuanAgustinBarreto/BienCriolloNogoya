@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VentasRouteImport } from './routes/ventas'
 import { Route as ResumenRouteImport } from './routes/resumen'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as GastosRouteImport } from './routes/gastos'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -22,6 +23,11 @@ const VentasRoute = VentasRouteImport.update({
 const ResumenRoute = ResumenRouteImport.update({
   id: '/resumen',
   path: '/resumen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GastosRoute = GastosRouteImport.update({
@@ -38,12 +44,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/gastos': typeof GastosRoute
+  '/login': typeof LoginRoute
   '/resumen': typeof ResumenRoute
   '/ventas': typeof VentasRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/gastos': typeof GastosRoute
+  '/login': typeof LoginRoute
   '/resumen': typeof ResumenRoute
   '/ventas': typeof VentasRoute
 }
@@ -51,20 +59,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/gastos': typeof GastosRoute
+  '/login': typeof LoginRoute
   '/resumen': typeof ResumenRoute
   '/ventas': typeof VentasRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/gastos' | '/resumen' | '/ventas'
+  fullPaths: '/' | '/gastos' | '/login' | '/resumen' | '/ventas'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/gastos' | '/resumen' | '/ventas'
-  id: '__root__' | '/' | '/gastos' | '/resumen' | '/ventas'
+  to: '/' | '/gastos' | '/login' | '/resumen' | '/ventas'
+  id: '__root__' | '/' | '/gastos' | '/login' | '/resumen' | '/ventas'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   GastosRoute: typeof GastosRoute
+  LoginRoute: typeof LoginRoute
   ResumenRoute: typeof ResumenRoute
   VentasRoute: typeof VentasRoute
 }
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/resumen'
       fullPath: '/resumen'
       preLoaderRoute: typeof ResumenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gastos': {
@@ -105,9 +122,20 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   GastosRoute: GastosRoute,
+  LoginRoute: LoginRoute,
   ResumenRoute: ResumenRoute,
   VentasRoute: VentasRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
