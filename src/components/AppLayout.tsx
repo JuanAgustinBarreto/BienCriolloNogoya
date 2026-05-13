@@ -1,6 +1,7 @@
 import { Link, useRouterState, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, ShoppingBag, Receipt, BarChart3, Pizza } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Receipt, BarChart3 } from "lucide-react";
 import { Toaster } from "sonner";
+import logo from "@/assets/logo.png";
 
 const nav = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
