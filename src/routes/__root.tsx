@@ -4,6 +4,7 @@ import {
 } from "@tanstack/react-router";
 import appCss from "../styles.css?url";
 import { AppLayout } from "@/components/AppLayout";
+import { AuthProvider } from "@/hooks/useAuth";
 
 function NotFoundComponent() {
   return (
@@ -83,7 +84,9 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <AppLayout />
+      <AuthProvider>
+        <AppLayout />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
