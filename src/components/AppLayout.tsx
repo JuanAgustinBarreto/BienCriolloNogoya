@@ -131,7 +131,22 @@ export function AppLayout() {
         </div>
       </nav>
 
-      <Toaster theme="dark" position="top-right" richColors />
+      <Toaster
+        theme="dark"
+        position="top-right"
+        richColors
+        closeButton
+        expand
+        toastOptions={{
+          classNames: {
+            toast:
+              "rounded-xl border border-border bg-card/90 backdrop-blur-xl shadow-glow text-sm",
+            description: "text-muted-foreground",
+            actionButton: "bg-primary text-primary-foreground",
+            cancelButton: "bg-muted text-muted-foreground",
+          },
+        }}
+      />
     </div>
   );
 }
